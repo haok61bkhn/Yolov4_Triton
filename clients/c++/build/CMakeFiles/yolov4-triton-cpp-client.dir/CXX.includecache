@@ -6,17 +6,17 @@
 
 #IncludeRegexTransform: 
 
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/Triton.hpp
+/home/haobk/code/Yolov4_Triton/clients/c++/Triton.hpp
 common.hpp
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/common.hpp
+/home/haobk/code/Yolov4_Triton/clients/c++/common.hpp
 Yolo.hpp
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/Yolo.hpp
+/home/haobk/code/Yolov4_Triton/clients/c++/Yolo.hpp
 
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/Yolo.hpp
+/home/haobk/code/Yolov4_Triton/clients/c++/Yolo.hpp
 common.hpp
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/common.hpp
+/home/haobk/code/Yolov4_Triton/clients/c++/common.hpp
 
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/common.hpp
+/home/haobk/code/Yolov4_Triton/clients/c++/common.hpp
 opencv2/core.hpp
 -
 opencv2/highgui.hpp
@@ -28,15 +28,15 @@ opencv2/core/utility.hpp
 fstream
 -
 grpc_client.h
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/grpc_client.h
+/home/haobk/code/Yolov4_Triton/clients/c++/grpc_client.h
 http_client.h
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/http_client.h
+/home/haobk/code/Yolov4_Triton/clients/c++/http_client.h
 
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/yolov4-client.cpp
+/home/haobk/code/Yolov4_Triton/clients/c++/yolov4-client.cpp
 Yolo.hpp
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/Yolo.hpp
+/home/haobk/code/Yolov4_Triton/clients/c++/Yolo.hpp
 Triton.hpp
-/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/Triton.hpp
+/home/haobk/code/Yolov4_Triton/clients/c++/Triton.hpp
 
 /opt/client/build/install/include/common.h
 algorithm

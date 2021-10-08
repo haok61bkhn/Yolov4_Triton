@@ -172,7 +172,8 @@ namespace Triton{
         size_t outputByteSize;
         for (auto outputName : output_names)
         {
-            if (outputName == "prob")
+            
+            if (outputName == "detections")
             { 
                 result->RawData(
                     outputName, (const uint8_t**)&outputData, &outputByteSize);

@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/yolov4-client.cpp" "/home/haobk/Mydata/Triton/yolov4-triton-tensorrt/clients/c++/build/CMakeFiles/yolov4-triton-cpp-client.dir/yolov4-client.cpp.o"
+  "/home/haobk/code/Yolov4_Triton/clients/c++/yolov4-client.cpp" "/home/haobk/code/Yolov4_Triton/clients/c++/build/CMakeFiles/yolov4-triton-cpp-client.dir/yolov4-client.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

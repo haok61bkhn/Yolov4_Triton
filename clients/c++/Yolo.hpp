@@ -92,28 +92,29 @@ namespace Yolo
         const int DETECTION_SIZE = sizeof(Detection) / sizeof(float);
         const int OUTPUT_SIZE = MAX_OUTPUT_BBOX_COUNT * DETECTION_SIZE + 1;  // we assume the yololayer outputs no more than MAX_OUTPUT_BBOX_COUNT boxes that conf >= 0.1
         std::map<float, std::vector<Detection>> m;
-        for (int i = 0; i < output[0] && i < Yolo::MAX_OUTPUT_BBOX_COUNT; i++) {
-            if (output[1 + DETECTION_SIZE * i + 4] <= BBOX_CONF_THRESH) continue;
-            Detection det;
-            memcpy(&det, &output[1 + DETECTION_SIZE * i], DETECTION_SIZE * sizeof(float));
-            if (m.count(det.class_id) == 0) m.emplace(det.class_id, std::vector<Detection>());
-            m[det.class_id].push_back(det);
-        }
-        for (auto it = m.begin(); it != m.end(); it++) {
-            //std::cout << it->second[0].class_id << " --- " << std::endl;
-            auto& dets = it->second;
-            std::sort(dets.begin(), dets.end(), cmp);
-            for (size_t m = 0; m < dets.size(); ++m) {
-                auto& item = dets[m];
-                res.push_back(item);
-                for (size_t n = m + 1; n < dets.size(); ++n) {
-                    if (iou(item.bbox, dets[n].bbox) > nms_thresh) {
-                        dets.erase(dets.begin()+n);
-                        --n;
-                    }
-                }
-            }
-        }
+        // std::cout<<output[0] ;
+        // for (int i = 0; i < output[0] && i < Yolo::MAX_OUTPUT_BBOX_COUNT; i++) {
+        //     if (output[1 + DETECTION_SIZE * i + 4] <= BBOX_CONF_THRESH) continue;
+        //     Detection det;
+        //     memcpy(&det, &output[1 + DETECTION_SIZE * i], DETECTION_SIZE * sizeof(float));
+        //     if (m.count(det.class_id) == 0) m.emplace(det.class_id, std::vector<Detection>());
+        //     m[det.class_id].push_back(det);
+        // }
+        // for (auto it = m.begin(); it != m.end(); it++) {
+        //     //std::cout << it->second[0].class_id << " --- " << std::endl;
+        //     auto& dets = it->second;
+        //     std::sort(dets.begin(), dets.end(), cmp);
+        //     for (size_t m = 0; m < dets.size(); ++m) {
+        //         auto& item = dets[m];
+        //         res.push_back(item);
+        //         for (size_t n = m + 1; n < dets.size(); ++n) {
+        //             if (iou(item.bbox, dets[n].bbox) > nms_thresh) {
+        //                 dets.erase(dets.begin()+n);
+        //                 --n;
+        //             }
+        //         }
+        //     }
+        // }
     }
 
 

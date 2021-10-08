@@ -218,6 +218,7 @@ if __name__ == '__main__':
                                     inputs=inputs,
                                     outputs=outputs,
                                     client_timeout=FLAGS.client_timeout)
+        
         if FLAGS.model_info:
             statistics = triton_client.get_inference_statistics(model_name=FLAGS.model)
             if len(statistics.model_stats) != 1:
@@ -227,6 +228,7 @@ if __name__ == '__main__':
         print("Done")
 
         result = results.as_numpy('detections')
+        print("shape ",result.shape)
         print(f"Received result buffer of size {result.shape}")
         print(f"Naive buffer sum: {np.sum(result)}")
 
@@ -290,7 +292,7 @@ if __name__ == '__main__':
                                     client_timeout=FLAGS.client_timeout)
 
             result = results.as_numpy('detections')
-
+            print("a",result.shape)
             detected_objects = postprocess(result, frame.shape[1], frame.shape[0], [FLAGS.width, FLAGS.height], FLAGS.confidence, FLAGS.nms)
             print(f"Frame {counter}: {len(detected_objects)} objects")
             counter += 1

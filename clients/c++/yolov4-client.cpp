@@ -1,9 +1,7 @@
 #include "Yolo.hpp"
 #include "Triton.hpp"
 
-
-
-static const std::string keys = 
+static const std::string keys =
     "{ help h   | | Print help message. }"
     "{ video v | video.mp4 | video name}"
     "{ serverAddress  s  | localhost:8001 | Path to server address}"
@@ -12,23 +10,24 @@ static const std::string keys =
     "{ labelsFile l | ../coco.names | path to  coco labels names}"
     "{ batch b | 1 | Batch size}";
 
-
-int main(int argc, const char* argv[])
+int main(int argc, const char *argv[])
 {
     cv::CommandLineParser parser(argc, argv, keys);
-    if (parser.has("help")){
+    if (parser.has("help"))
+    {
         parser.printMessage();
-        return 0;  
+        return 0;
     }
 
     std::string serverAddress = parser.get<std::string>("serverAddress");
     bool verbose = parser.get<bool>("verbose");
     std::string videoName;
     videoName = parser.get<std::string>("video");
-    Triton::ProtocolType protocol; 
-    if(parser.get<std::string>("protocol") == "grpc")
+    Triton::ProtocolType protocol;
+    if (parser.get<std::string>("protocol") == "grpc")
         protocol = Triton::ProtocolType::GRPC;
-    else protocol = Triton::ProtocolType::HTTP;      
+    else
+        protocol = Triton::ProtocolType::HTTP;
     const size_t batch_size = parser.get<size_t>("batch");
 
     Triton::ScaleType scale = Triton::ScaleType::YOLOV4;
@@ -36,10 +35,10 @@ int main(int argc, const char* argv[])
     std::string modelName = "yolov4";
     std::string modelVersion = "";
     std::string url(serverAddress);
-    
+
     tc::Headers httpHeaders;
 
-    const std::string fileName = parser.get<std::string>("labelsFile"); 
+    const std::string fileName = parser.get<std::string>("labelsFile");
 
     std::cout << "Server address: " << serverAddress << std::endl;
     std::cout << "Video name: " << videoName << std::endl;
@@ -109,7 +108,8 @@ int main(int argc, const char* argv[])
 
     Yolo::coco_names = Yolo::readLabelNames(fileName);
 
-    if(Yolo::coco_names.size() != Yolo::CLASS_NUM){
+    if (Yolo::coco_names.size() != Yolo::CLASS_NUM)
+    {
         std::cerr << "Wrong labels filename or wrong path to file: " << fileName << std::endl;
         exit(1);
     }
@@ -134,7 +134,7 @@ int main(int argc, const char* argv[])
         {
             input_data_raw.push_back(Triton::Preprocess(
                 frameBatch[batchId], yoloModelInfo.input_format_, yoloModelInfo.type1_, yoloModelInfo.type3_,
-                yoloModelInfo.input_c_ , cv::Size(yoloModelInfo.input_w_, yoloModelInfo.input_h_), scale));
+                yoloModelInfo.input_c_, cv::Size(yoloModelInfo.input_w_, yoloModelInfo.input_h_), scale));
             err = input_ptr->AppendRaw(input_data_raw[batchId]);
             if (!err.IsOk())
             {
@@ -161,28 +161,33 @@ int main(int argc, const char* argv[])
                       << std::endl;
             exit(1);
         }
-        
+
         const int DETECTION_SIZE = sizeof(Yolo::Detection) / sizeof(float);
         const int OUTPUT_SIZE = Yolo::MAX_OUTPUT_BBOX_COUNT * DETECTION_SIZE + 1;
+
         auto [detections, shape] = Triton::PostprocessYoloV4(result, batch_size, yoloModelInfo.output_names_, yoloModelInfo.max_batch_size_ != 0);
-        std::vector<std::vector<Yolo::Detection>> batch_res(batch_size);    
-        const float *prob = detections.data();        
-        for (size_t batchId = 0; batchId < batch_size; batchId++) 
+        std::vector<std::vector<Yolo::Detection>> batch_res(batch_size);
+        const float *prob = detections.data();
+        for (size_t batchId = 0; batchId < batch_size; batchId++)
         {
-            auto& res = batch_res[batchId];
+            auto &res = batch_res[batchId];
+
             Yolo::nms(res, &prob[batchId * OUTPUT_SIZE]);
         }
-        for (size_t batchId = 0; batchId < batch_size; batchId++) 
+        for (size_t batchId = 0; batchId < batch_size; batchId++)
         {
-            auto& res = batch_res[batchId];
+            auto &res = batch_res[batchId];
             cv::Mat img = frameBatch.at(batchId);
-            for (size_t j = 0; j < res.size(); j++) {
+            for (size_t j = 0; j < res.size(); j++)
+            {
+                std::cout<<Yolo::coco_names[(int)res[j].class_id];
                 cv::Rect r = Yolo::get_rect(img, res[j].bbox);
                 cv::rectangle(img, r, cv::Scalar(0x27, 0xC1, 0x36), 2);
                 cv::putText(img, Yolo::coco_names[(int)res[j].class_id], cv::Point(r.x, r.y - 1), cv::FONT_HERSHEY_PLAIN, 1.2, cv::Scalar(0xFF, 0xFF, 0xFF), 2);
             }
-            cv::imshow("video feed " + std::to_string(batchId), img);
-            cv::waitKey(1);
+            // cv::imshow();
+            // cv::waitKey(1);
+            // cv::imwrite("a.jpg", img);
         }
         frameBatch.clear();
         input_data_raw.clear();
